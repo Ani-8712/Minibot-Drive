@@ -9,6 +9,9 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+
+import java.util.function.IntSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -60,8 +63,19 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is
     // pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
+    IntSupplier cringe = () -> {
+      if (m_driverController.getRightX() > 0.3) {
+        return -1;
+      } else if (m_driverController.getRightX() < -0.3) {
+        return 1;
+      }
+      return 0;
+    };
+    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    m_driverController.leftStick()
+        .whileTrue(
+            new DriveCommands(m_Drivetrain).go(m_driverController.getLeftY() * 5, cringe.getAsInt(), m_Drivetrain));
   }
 
   /**
