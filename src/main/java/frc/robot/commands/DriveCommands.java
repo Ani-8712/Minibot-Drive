@@ -11,14 +11,11 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveCommands extends CommandBase {
-    private DoubleSupplier lSpeed;
-    private DoubleSupplier rSpeed;
+
     private Drivetrain m_drivetrain;
 
-    public DriveCommands(DoubleSupplier lSpeed, DoubleSupplier rSpeed, Drivetrain drvtrn) {
+    public DriveCommands(Drivetrain drvtrn) {
 
-        this.lSpeed = lSpeed;
-        this.rSpeed = rSpeed;
         this.m_drivetrain = drvtrn;
         addRequirements(this.m_drivetrain);// why do we do this? idk. Maybe I'll find out soon. Just use the good ol'ask
                                            // Edward or Mikita
@@ -29,7 +26,7 @@ public class DriveCommands extends CommandBase {
 
     }
 
-    public Command go(double speed, int isTurn/* if 1, turn left | if 0, no turn | if -1, turn right */,
+    public Command go(double leftSpeed, double rightSpeed/* if 1, turn left | if 0, no turn | if -1, turn right */,
             Drivetrain dt) {
         return new Command() {
             @Override
@@ -45,17 +42,8 @@ public class DriveCommands extends CommandBase {
 
             @Override
             public void execute() {
-                if (isTurn == 0) {
-                    dt.setLeftSpeed(speed);
-                    dt.setRightSpeed(speed);
-                } else if (isTurn == 1) {
-                    dt.setLeftSpeed(speed / 2);// turn left by running left side at half speed
-                    dt.setRightSpeed(speed);
-                } else if (isTurn == -1) {
-                    dt.setLeftSpeed(speed);// turn right by running right side at half speed
-                    dt.setRightSpeed(speed / 2);
-                }
-
+                dt.setLeftSpeed(leftSpeed);
+                dt.setRightSpeed(rightSpeed);
             }
 
         };
