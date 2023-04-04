@@ -10,6 +10,7 @@ import frc.robot.commands.DriveCommands;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 
+import java.util.function.DoubleSupplier;
 import java.util.function.IntSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -64,7 +65,7 @@ public class RobotContainer {
     // pressed,
     // cancelling on release.
 
-    IntSupplier cringe = () -> {
+    DoubleSupplier cringe = () -> {
       if (m_driverController.getRightX() > 0.3) {
         return -1;
       } else if (m_driverController.getRightX() < -0.3) {
@@ -75,7 +76,8 @@ public class RobotContainer {
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     m_driverController.leftStick()
         .whileTrue(
-            new DriveCommands(m_Drivetrain).go(m_driverController.getLeftY() * 5, cringe.getAsInt(), m_Drivetrain));
+            new DriveCommands(m_Drivetrain).go(m_driverController.getLeftY() * 5 - m_driverController.getRightX() * 5,
+                m_driverController.getLeftY() * 5 + m_driverController.getRightX() * 5, m_Drivetrain));
   }
 
   /**
