@@ -74,10 +74,10 @@ public class RobotContainer {
       return 0;
     };
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    m_driverController.leftStick()
+    m_driverController.leftTrigger()
         .whileTrue(
-            new DriveCommands(m_Drivetrain).go(m_driverController.getLeftY() * 5 - m_driverController.getRightX() * 5,
-                m_driverController.getLeftY() * 5 + m_driverController.getRightX() * 5, m_Drivetrain));
+            new DriveCommands(m_Drivetrain).go(m_driverController.getLeftTriggerAxis(),
+                m_driverController.getRightTriggerAxis(), this.m_Drivetrain));
   }
 
   /**
